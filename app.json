@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "wakeup",
+    "slug": "snack-86c76c16-6b43-4764-bf78-f4b471fa16b7",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": "WakeUp!! is a focused alarm app designed to make getting out of bed harder to avoid. Set an alarm, choose your sound and theme, and scan a real-world barcode item to fully turn the alarm off. You can snooze using a personal 10-digit code, but only scanning your chosen wake item completes the mission."
+  }
+}
