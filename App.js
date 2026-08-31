@@ -6,6 +6,7 @@ import {
   Modal,
   Platform,
   SafeAreaView,
+  ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -119,7 +120,7 @@ const THEMES = {
     accentText: '#FFFFFF',
     radius: 20,
     largeRadius: 26,
-    wallpaper: null,
+    wallpaper: require('./assets/bkgd.png'),
   },
 };
 
@@ -1384,11 +1385,15 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView
-      style={[
-        styles.safeArea,
-        { backgroundColor: isArmed ? theme.armedBg : theme.bg },
-      ]}>
+  <ImageBackground
+    source={isArmed ? undefined : theme.wallpaper}
+    style={[
+      styles.safeArea,
+      { backgroundColor: isArmed ? theme.armedBg : theme.bg },
+    ]}
+    resizeMode="cover"
+    imageStyle={styles.wallpaperImage}
+  >
       <StatusBar
         barStyle="light-content"
         backgroundColor={isArmed ? theme.armedBg : theme.bg}
@@ -1494,9 +1499,9 @@ export default function App() {
         </View>
       )}
 
-      {renderScannerModal()}
-    </SafeAreaView>
-  );
+          {renderScannerModal()}
+  </ImageBackground>
+);
 }
 
 function themedCard(theme) {
@@ -1913,4 +1918,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '800',
   },
+  wallpaperImage: {
+  opacity: 0.55,
+},
 });
