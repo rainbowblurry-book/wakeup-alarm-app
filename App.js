@@ -30,7 +30,7 @@ const { width } = Dimensions.get('window');
 
 const SETTINGS_KEY = 'wakeup_settings_v4';
 const MIN_SNOOZE_SECONDS = 20;
-const PREVIEW_DURATION_MS = 3000;
+const PREVIEW_DURATION_MS = 2500;
 const DEFAULT_SOUND = 'chimes';
 const DEFAULT_THEME = 'minimal';
 const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -40,9 +40,9 @@ const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 // missing internet connection cannot stop the alarm sound from loading.
 const SOUND_PROFILES = {
   chimes: {
-    name: 'Chimes',
-    uri: 'https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg',
-  },
+  name: 'Chimes',
+  source: require('./assets/sounds/glass-at-daybreaks.mp3'),
+},
   radar: {
     name: 'Radar',
     uri: 'https://actions.google.com/sounds/v1/alarms/beep_short.ogg',
@@ -392,11 +392,12 @@ export default function App() {
         shouldPlayInBackground: true,
         interruptionMode: 'doNotMix',
       });
+      const source = profile.source ?? {
+  uri: profile.uri,
+  updateInterval: 500,
+};
 
-      const player = createAudioPlayer(
-        { uri: profile.uri },
-        { updateInterval: 500 }
-      );
+const player = createAudioPlayer(source);
       player.loop = true;
       player.volume = 1.0;
 
@@ -807,17 +808,16 @@ export default function App() {
          ================================================================ */}
       <View style={[styles.card, themedCard(theme)]}>
         <Text style={[styles.cardHeader, { color: theme.muted }]}>
-          WAKE ITEM
+          YOUR WAKE MISSION
         </Text>
 
         <Text style={[styles.cardDesc, { color: theme.muted }]}>
-          Scan the barcode of an item you must physically reach to fully
-          disarm the alarm.
+          Choose a barcode or QR code on an item you must physically reach to turn off your alarm.
         </Text>
 
         <View style={styles.row}>
           <Text style={[styles.rowLabel, { color: theme.text }]}>
-            {targetBarcode ? 'Saved ✓' : 'Not set'}
+            {targetBarcode ? 'Wake item ready' : 'No wake item set'}
           </Text>
 
           <TouchableOpacity
@@ -839,7 +839,7 @@ export default function App() {
                 { color: theme.text },
               ]}
             >
-              {targetBarcode ? 'Change item' : 'Scan item'}
+              {targetBarcode ? 'Change wake item' : 'Set wake item'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -1400,10 +1400,52 @@ export default function App() {
       />
 
       <View style={styles.topbar}>
-        <Text
-          style={[styles.brand, { color: isArmed ? '#F5B54C' : theme.muted }]}>
-          WAKEUP!!
-        </Text>
+        <View
+  style={[
+    styles.brandLockup,
+    {
+      backgroundColor: isArmed
+        ? 'rgba(245, 181, 76, 0.12)'
+        : theme.surface,
+      borderColor: isArmed ? '#F5B54C' : theme.border,
+    },
+  ]}
+>
+  <View
+    style={[
+      styles.brandMark,
+      {
+        backgroundColor: isArmed ? '#F5B54C' : theme.accent,
+      },
+    ]}
+  >
+    <Feather
+      name="sunrise"
+      size={18}
+      color={isArmed ? '#2A1B12' : theme.accentText}
+    />
+  </View>
+
+  <View style={styles.brandTextWrap}>
+    <Text
+      style={[
+        styles.brand,
+        { color: isArmed ? '#F5B54C' : theme.text },
+      ]}
+    >
+      WAKE / UP
+    </Text>
+
+    <Text
+      style={[
+        styles.brandTagline,
+        { color: isArmed ? '#F5B54C' : theme.muted },
+      ]}
+    >
+      ONE ALARM · ONE MISSION
+    </Text>
+  </View>
+</View>
         <View
           style={[
             styles.statusPill,
@@ -1519,15 +1561,60 @@ const styles = StyleSheet.create({
   views: { flex: 1 },
 
   topbar: {
-    minHeight: 72,
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  brand: { fontSize: 12, fontWeight: '900', letterSpacing: 2 },
+  minHeight: Platform.OS === 'android' ? 96 : 84,
+  paddingHorizontal: 20,
+  paddingTop:
+    Platform.OS === 'android'
+      ? (StatusBar.currentHeight ?? 0) + 12
+      : 20,
+  paddingBottom: 12,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+},
+  brandLockup: {
+  minHeight: 52,
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderWidth: 1,
+  borderRadius: 18,
+  paddingHorizontal: 10,
+  paddingVertical: 8,
+  flexShrink: 1,
+  marginRight: 10,
+},
+
+brandMark: {
+  width: 32,
+  height: 32,
+  borderRadius: 11,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 8,
+},
+
+brandTextWrap: {
+  flexShrink: 1,
+},
+
+brand: {
+  fontSize: 16,
+  fontWeight: '900',
+  letterSpacing: 0.7,
+  lineHeight: 19,
+  fontFamily: Platform.OS === 'android' ? 'sans-serif-condensed' : undefined,
+  includeFontPadding: false,
+},
+
+brandTagline: {
+  fontSize: 8.5,
+  fontWeight: '800',
+  letterSpacing: 0.85,
+  lineHeight: 11,
+  marginTop: 2,
+  opacity: 0.76,
+  includeFontPadding: false,
+},
   statusPill: {
     minHeight: 32,
     borderWidth: 1,
