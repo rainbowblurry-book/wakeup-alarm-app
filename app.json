@@ -4,14 +4,14 @@
     "slug": "snack-86c76c16-6b43-4764-bf78-f4b471fa16b7",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    //"icon": "./assets/icon.png",
+    //"splash": {
+    //  "image": "./assets/splash-icon.png",
+    //  "resizeMode": "contain",
+    // "backgroundColor": "#ffffff"
+    //},
     "ios": {
       "supportsTablet": true
     },
