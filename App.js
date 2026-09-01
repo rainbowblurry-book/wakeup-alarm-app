@@ -1453,7 +1453,11 @@ const player = createAudioPlayer(source);
               backgroundColor: isArmed ? 'transparent' : theme.surface,
               borderColor: isArmed ? '#F5B54C' : theme.border,
             },
-          ]}>
+          ]}
+          accessible
+          accessibilityRole="text"
+          accessibilityLabel={`Alarm status: ${isArmed ? 'Armed' : 'Standby'}`}
+          accessibilityLiveRegion="polite">
           <View
             style={[
               styles.statusIcon,
