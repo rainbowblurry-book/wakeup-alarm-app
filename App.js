@@ -1456,18 +1456,21 @@ const player = createAudioPlayer(source);
           ]}>
           <View
             style={[
-              styles.statusDot,
+              styles.statusIcon,
               { backgroundColor: isArmed ? '#F5B54C' : theme.accent },
-            ]}
-          />
+            ]}>
+            <Feather
+              name={isArmed ? 'shield' : 'moon'}
+              size={13}
+              color={isArmed ? '#2A1B12' : theme.accentText}
+            />
+          </View>
           <Text
-            style={{
-              color: isArmed ? '#F5B54C' : theme.accent,
-              fontSize: 11,
-              fontWeight: '800',
-              letterSpacing: 1,
-            }}>
-            {isArmed ? 'ARMED' : 'STANDBY'}
+            style={[
+              styles.statusState,
+              { color: isArmed ? '#F5B54C' : theme.text },
+            ]}>
+            {isArmed ? 'Armed' : 'Standby'}
           </Text>
         </View>
       </View>
@@ -1616,15 +1619,29 @@ brandTagline: {
   includeFontPadding: false,
 },
   statusPill: {
-    minHeight: 32,
+    minHeight: 40,
     borderWidth: 1,
-    borderRadius: 20,
-    paddingHorizontal: 12,
+    borderRadius: 16,
+    paddingHorizontal: 9,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
   },
-  statusDot: { width: 7, height: 7, borderRadius: 4 },
+  statusIcon: {
+    width: 22,
+    height: 22,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 6,
+  },
+  statusState: {
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.1,
+    lineHeight: 16,
+    fontFamily: Platform.OS === 'android' ? 'sans-serif-medium' : undefined,
+    includeFontPadding: false,
+  },
 
   tabScroll: { flex: 1, paddingHorizontal: 22 },
   tabContent: { paddingTop: 10, paddingBottom: 24 },
